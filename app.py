@@ -15,6 +15,7 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(100))
   linkedin = db.Column(db.String(100), unique=True)
+  # image = db.Column(db.String(500))
   summary = db.Column(db.String())
   python_skill = db.Column(db.String(5))
   react_skill = db.Column(db.String(5))
@@ -31,6 +32,7 @@ class Student(db.Model):
   def __init__(self, name, linkedin, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill):
     self.name = name
     self.linkedin = linkedin
+    # self.image = image
     self.summary = summary
     self.python_skill = python_skill
     self.react_skill = react_skill
@@ -47,7 +49,7 @@ class Student(db.Model):
 
 @app.route("/")
 def home():
-  return "<h1>Sup Dawggg</h1>"
+  return "<h1>Bottega Quick Cards API</h1>"
 
 @app.route("/add_student", methods=["POST"])
 def add_student():
@@ -56,6 +58,7 @@ def add_student():
 
     name = post_data.get("name")
     linkedin = post_data.get("linkedIn")
+    # image = post_data.get("image")
     summary = post_data.get("summary")
     python_skill = post_data.get("python")
     react_skill = post_data.get("react")
