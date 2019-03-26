@@ -15,7 +15,7 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(100))
   linkedin = db.Column(db.String(100), unique=True)
-  image = db.Column(db.String(1000))
+  image = db.Column(db.String())
   summary = db.Column(db.String())
   python_skill = db.Column(db.String(5))
   react_skill = db.Column(db.String(5))
@@ -29,8 +29,7 @@ class Student(db.Model):
   uml_skill = db.Column(db.String(5))
   ui_ux_skill = db.Column(db.String(5))
 
-  def __init__(self, id, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill):
-    self.id = id
+  def __init__(self, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill):
     self.name = name
     self.linkedin = linkedin
     self.image = image
@@ -73,7 +72,7 @@ def add_student():
     uml_skill = post_data.get("uml")
     ui_ux_skill = post_data.get("uiUx")
 
-    register_student = Student(id, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill)
+    register_student = Student(name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill)
 
     db.session.add(register_student)
     db.session.commit()
