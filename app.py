@@ -15,7 +15,7 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(100))
   linkedin = db.Column(db.String(100), unique=True)
-  # image = db.Column(db.String(500))
+  image = db.Column(db.String(1000))
   summary = db.Column(db.String())
   python_skill = db.Column(db.String(5))
   react_skill = db.Column(db.String(5))
@@ -29,10 +29,11 @@ class Student(db.Model):
   uml_skill = db.Column(db.String(5))
   ui_ux_skill = db.Column(db.String(5))
 
-  def __init__(self, name, linkedin, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill):
+  def __init__(self, id, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill):
+    self.id = id
     self.name = name
     self.linkedin = linkedin
-    # self.image = image
+    self.image = image
     self.summary = summary
     self.python_skill = python_skill
     self.react_skill = react_skill
@@ -58,7 +59,7 @@ def add_student():
 
     name = post_data.get("name")
     linkedin = post_data.get("linkedIn")
-    # image = post_data.get("image")
+    image = post_data.get("image")
     summary = post_data.get("summary")
     python_skill = post_data.get("python")
     react_skill = post_data.get("react")
@@ -72,7 +73,7 @@ def add_student():
     uml_skill = post_data.get("uml")
     ui_ux_skill = post_data.get("uiUx")
 
-    register_student = Student(name, linkedin, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill)
+    register_student = Student(id, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill)
 
     db.session.add(register_student)
     db.session.commit()
@@ -81,7 +82,7 @@ def add_student():
 
 @app.route("/return_students", methods=["GET"])
 def return_students():
-  all_students = db.session.query(Student.name, Student.linkedin, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill).all()
+  all_students = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill).all()
   return jsonify(all_students)
 
 
