@@ -29,7 +29,18 @@ class Student(db.Model):
   uml_skill = db.Column(db.String(5))
   ui_ux_skill = db.Column(db.String(5))
 
-  def __init__(self, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill):
+  control_structures = db.Column(db.String(5))
+  algorithms = db.Column(db.String(5))
+  quality = db.Column(db.String(5))
+  project_management = db.Column(db.String(5))
+  problem_solving = db.Column(db.String(5))
+  agile = db.Column(db.String(5))
+  oop = db.Column(db.String(5))
+  functional_programming = db.Column(db.String(5))
+  software_engineering = db.Column(db.String(5))
+  apis = db.Column(db.String(5))
+
+  def __init__(self, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis):
     self.name = name
     self.linkedin = linkedin
     self.image = image
@@ -45,6 +56,17 @@ class Student(db.Model):
     self.html_skill = html_skill
     self.uml_skill = uml_skill
     self.ui_ux_skill = ui_ux_skill
+
+    self.control_structures = control_structures
+    self.algorithms = algorithms
+    self.quality = quality
+    self.project_management = project_management
+    self.problem_solving = problem_solving
+    self.agile = agile
+    self.oop = oop
+    self.functional_programming = functional_programming
+    self.software_engineering = software_engineering
+    self.apis = apis
 
 
 @app.route("/")
@@ -72,7 +94,18 @@ def add_student():
     uml_skill = post_data.get("uml")
     ui_ux_skill = post_data.get("uiUx")
 
-    register_student = Student(name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill)
+    control_structures = post_data.get("controlStructures")
+    algorithms = post_data.get("algorithms")
+    quality = post_data.get("quality")
+    project_management = post_data.get("projectManagement")
+    problem_solving = post_data.get("problemSolving")
+    agile = post_data.get("agile")
+    oop = post_data.get("oop")
+    functional_programming = post_data.get("functionalProgramming")
+    software_engineering = post_data.get("softwareEngineering")
+    apis = post_data.get("apis")
+
+    register_student = Student(name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis)
 
     db.session.add(register_student)
     db.session.commit()
@@ -81,7 +114,7 @@ def add_student():
 
 @app.route("/return_students", methods=["GET"])
 def return_students():
-  all_students = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill).all()
+  all_students = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill, Student.control_structures, Student.algorithms, Student.quality, Student.project_management, Student.problem_solving, Student.agile, Student.oop, Student.functional_programming, Student.software_engineering, Student.apis).all()
   return jsonify(all_students)
 
 
