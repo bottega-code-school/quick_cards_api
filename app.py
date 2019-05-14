@@ -112,10 +112,18 @@ def add_student():
     return "Student Successfully Submitted"
   return ""
 
-@app.route("/return_students", methods=["GET"])
+# get all students
+@app.route("/students", methods=["GET"])
 def return_students():
   all_students = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill, Student.control_structures, Student.algorithms, Student.quality, Student.project_management, Student.problem_solving, Student.agile, Student.oop, Student.functional_programming, Student.software_engineering, Student.apis).all()
   return jsonify(all_students)
+
+# get one student
+@app.route("/student/<id>", methods=["GET"])
+def return_student(id):
+  student = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill, Student.control_structures, Student.algorithms, Student.quality, Student.project_management, Student.problem_solving, Student.agile, Student.oop, Student.functional_programming, Student.software_engineering, Student.apis).filter(Student.id == id).first()
+  return jsonify(student)
+
 
 
 if __name__ == "__main__":
