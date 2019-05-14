@@ -2,12 +2,14 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
 from flask_cors import CORS
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://xqvrdtjjrillen:6f2a0915b506c64482dd7be2fd3129ff7d9a57f45ab543cd30cd1691482ca202@ec2-107-20-177-161.compute-1.amazonaws.com:5432/d90t4tcbeg7t43"
 heroku = Heroku(app)
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 class Student(db.Model):
   __tablename__ = "students"
@@ -68,6 +70,13 @@ class Student(db.Model):
     self.software_engineering = software_engineering
     self.apis = apis
 
+class StudentSchema(ma.Schema):
+  class Meta:
+    fields = ("id", "name", "linkedin", "image", "summary", "python_skill", "react_skill", "github_skill", "json_skill", "css_scss_skill", "data_type_skill", "sql_skill", "javascript_skill", "html_skill", "uml_skill", "ui_ux_skill", "control_structures", "algorithms", "quality", "project_management", "problem_solving", "agile", "oop", "functional_programming", "software_engineering", "apis")
+
+student_schema = StudentSchema()
+students_schema = StudentSchema(many=True)
+
 
 @app.route("/")
 def home():
@@ -76,34 +85,33 @@ def home():
 @app.route("/add_student", methods=["POST"])
 def add_student():
   if request.content_type == "application/json":
-    post_data = request.get_json()
+  
+    name = request.json["name"]
+    linkedin = request.json["linkedIn"]
+    image = request.json["image"]
+    summary = request.json["summary"]
+    python_skill = request.json["python"]
+    react_skill = request.json["react"]
+    github_skill = request.json["github"]
+    json_skill = request.json["json"]
+    css_scss_skill = request.json["cssScss"]
+    data_type_skill = request.json["dataType"]
+    sql_skill = request.json["sql"]
+    javascript_skill = request.json["javaScript"]
+    html_skill = request.json["html"]
+    uml_skill = request.json["uml"]
+    ui_ux_skill = request.json["uiUx"]
 
-    name = post_data.get("name")
-    linkedin = post_data.get("linkedIn")
-    image = post_data.get("image")
-    summary = post_data.get("summary")
-    python_skill = post_data.get("python")
-    react_skill = post_data.get("react")
-    github_skill = post_data.get("github")
-    json_skill = post_data.get("json")
-    css_scss_skill = post_data.get("cssScss")
-    data_type_skill = post_data.get("dataType")
-    sql_skill = post_data.get("sql")
-    javascript_skill = post_data.get("javaScript")
-    html_skill = post_data.get("html")
-    uml_skill = post_data.get("uml")
-    ui_ux_skill = post_data.get("uiUx")
-
-    control_structures = post_data.get("controlStructures")
-    algorithms = post_data.get("algorithms")
-    quality = post_data.get("quality")
-    project_management = post_data.get("projectManagement")
-    problem_solving = post_data.get("problemSolving")
-    agile = post_data.get("agile")
-    oop = post_data.get("oop")
-    functional_programming = post_data.get("functionalProgramming")
-    software_engineering = post_data.get("softwareEngineering")
-    apis = post_data.get("apis")
+    control_structures = request.json["controlStructures"]
+    algorithms = request.json["algorithms"]
+    quality = request.json["quality"]
+    project_management = request.json["projectManagement"]
+    problem_solving = request.json["problemSolving"]
+    agile = request.json["agile"]
+    oop = request.json["oop"]
+    functional_programming = request.json["functionalProgramming"]
+    software_engineering = request.json["softwareEngineering"]
+    apis = request.json["apis"]
 
     register_student = Student(name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis)
 
@@ -115,15 +123,15 @@ def add_student():
 # get all students
 @app.route("/students", methods=["GET"])
 def return_students():
-  all_students = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill, Student.control_structures, Student.algorithms, Student.quality, Student.project_management, Student.problem_solving, Student.agile, Student.oop, Student.functional_programming, Student.software_engineering, Student.apis).all()
-  return jsonify(all_students)
+  all_students = Student.query.all()
+  result = students_schema.dump(all_students)
+  return jsonify(result.data)
 
 # get one student
 @app.route("/student/<id>", methods=["GET"])
 def return_student(id):
-  student = db.session.query(Student.id, Student.name, Student.linkedin, Student.image, Student.summary, Student.python_skill, Student.react_skill, Student.github_skill, Student.json_skill, Student.css_scss_skill, Student.data_type_skill, Student.sql_skill, Student.javascript_skill, Student.html_skill, Student.uml_skill, Student.ui_ux_skill, Student.control_structures, Student.algorithms, Student.quality, Student.project_management, Student.problem_solving, Student.agile, Student.oop, Student.functional_programming, Student.software_engineering, Student.apis).filter(Student.id == id).first()
-  return jsonify(student)
-
+  student = Student.query.get(id)
+  return student_schema.jsonify(student)
 
 
 if __name__ == "__main__":
