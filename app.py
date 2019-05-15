@@ -118,7 +118,7 @@ def add_student():
     db.session.add(register_student)
     db.session.commit()
     return "Student Successfully Submitted"
-  return ""
+  return "POST failed"
 
 # get all students
 @app.route("/students", methods=["GET"])
@@ -132,6 +132,14 @@ def return_students():
 def return_student(id):
   student = Student.query.get(id)
   return student_schema.jsonify(student)
+
+@app.route("/student/<id>", methods=["DELETE"])
+def delete_student(id):
+  student = Student.query.get(id)
+  db.session.delete(student)
+  db.session.commit()
+
+  return jsonify("Student Deleted")
 
 
 if __name__ == "__main__":
