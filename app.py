@@ -82,12 +82,13 @@ students_schema = StudentSchema(many=True)
 def home():
   return "<h1>Bottega Quick Cards API</h1>"
 
-@app.route("/add_student", methods=["POST"])
+# add student
+@app.route("/add-student", methods=["POST"])
 def add_student():
   if request.content_type == "application/json":
   
     name = request.json["name"]
-    linkedin = request.json["linkedIn"]
+    linkedin = request.json["linkedin"]
     image = request.json["image"]
     summary = request.json["summary"]
     python_skill = request.json["python"]
@@ -120,6 +121,42 @@ def add_student():
     return "Student Successfully Submitted"
   return "POST failed"
 
+# update student
+@app.route("/student/<id>", methods=["PUT"])
+def update_student(id):
+  student = Student.query.get(id)
+
+  student.name = request.json["name"]
+  student.linkedin = request.json["linkedin"]
+  student.image = request.json["image"]
+  student.summary = request.json["summary"]
+  student.python_skill = request.json["python"]
+  student.react_skill = request.json["react"]
+  student.github_skill = request.json["github"]
+  student.json_skill = request.json["json"]
+  student.css_scss_skill = request.json["cssScss"]
+  student.data_type_skill = request.json["dataType"]
+  student.sql_skill = request.json["sql"]
+  student.javascript_skill = request.json["javaScript"]
+  student.html_skill = request.json["html"]
+  student.uml_skill = request.json["uml"]
+  student.ui_ux_skill = request.json["uiUx"]
+
+  student.control_structures = request.json["controlStructures"]
+  student.algorithms = request.json["algorithms"]
+  student.quality = request.json["quality"]
+  student.project_management = request.json["projectManagement"]
+  student.problem_solving = request.json["problemSolving"]
+  student.agile = request.json["agile"]
+  student.oop = request.json["oop"]
+  student.functional_programming = request.json["functionalProgramming"]
+  student.software_engineering = request.json["softwareEngineering"]
+  student.apis = request.json["apis"]
+  
+  db.session.commit()
+  return student_schema.jsonify(student)
+
+
 # get all students
 @app.route("/students", methods=["GET"])
 def return_students():
@@ -133,6 +170,7 @@ def return_student(id):
   student = Student.query.get(id)
   return student_schema.jsonify(student)
 
+# delete student
 @app.route("/student/<id>", methods=["DELETE"])
 def delete_student(id):
   student = Student.query.get(id)
