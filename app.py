@@ -72,7 +72,7 @@ class Student(db.Model):
 
 class StudentSchema(ma.Schema):
   class Meta:
-    fields = ("id", "name", "linkedin", "image", "summary", "python", "react", "github", "json", "cssScss", "dataType", "sql", "javaScript", "html", "uml", "uiUx", "controlStructures", "algorithms", "quality", "projectManagement", "problemSolving", "agile", "oop", "functionalProgramming", "software_engineering", "apis")
+    fields = ("id", "name", "linkedin", "image", "summary", "python_skill", "react_skill", "github_skill", "json_skill", "css_scss_skill", "data_type_skill", "sql_skill", "javascript_skill", "html_skill", "uml_skill", "ui_ux_skill", "control_structures", "algorithms", "quality", "project_management", "problem_solving", "agile", "oop", "functional_programming", "software_engineering", "apis")
 
 student_schema = StudentSchema()
 students_schema = StudentSchema(many=True)
