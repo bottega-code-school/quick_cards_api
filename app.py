@@ -17,6 +17,7 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(100))
   linkedin = db.Column(db.String(100), unique=True)
+  github = db.Column(db.String(100), unique=True)
   image = db.Column(db.String())
   summary = db.Column(db.String())
   python_skill = db.Column(db.String(5))
@@ -41,10 +42,12 @@ class Student(db.Model):
   functional_programming = db.Column(db.String(5))
   software_engineering = db.Column(db.String(5))
   apis = db.Column(db.String(5))
+  hired = db.Column(db.Boolean)
 
-  def __init__(self, name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis):
+  def __init__(self, name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired):
     self.name = name
     self.linkedin = linkedin
+    self.github = github
     self.image = image
     self.summary = summary
     self.python_skill = python_skill
@@ -69,10 +72,11 @@ class Student(db.Model):
     self.functional_programming = functional_programming
     self.software_engineering = software_engineering
     self.apis = apis
+    self.hired = hired
 
 class StudentSchema(ma.Schema):
   class Meta:
-    fields = ("id", "name", "linkedin", "image", "summary", "python_skill", "react_skill", "github_skill", "json_skill", "css_scss_skill", "data_type_skill", "sql_skill", "javascript_skill", "html_skill", "uml_skill", "ui_ux_skill", "control_structures", "algorithms", "quality", "project_management", "problem_solving", "agile", "oop", "functional_programming", "software_engineering", "apis")
+    fields = ("id", "name", "linkedin", "github", "image", "summary", "python_skill", "react_skill", "github_skill", "json_skill", "css_scss_skill", "data_type_skill", "sql_skill", "javascript_skill", "html_skill", "uml_skill", "ui_ux_skill", "control_structures", "algorithms", "quality", "project_management", "problem_solving", "agile", "oop", "functional_programming", "software_engineering", "apis", "hired")
 
 student_schema = StudentSchema()
 students_schema = StudentSchema(many=True)
@@ -89,6 +93,7 @@ def add_student():
   
     name = request.json["name"]
     linkedin = request.json["linkedin"]
+    github = request.json["github"]
     image = request.json["image"]
     summary = request.json["summary"]
     python_skill = request.json["python_skill"]
@@ -113,8 +118,9 @@ def add_student():
     functional_programming = request.json["functional_programming"]
     software_engineering = request.json["software_engineering"]
     apis = request.json["apis"]
+    hired = request.json["hired"]
 
-    register_student = Student(name, linkedin, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis)
+    register_student = Student(name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired)
 
     db.session.add(register_student)
     db.session.commit()
@@ -128,6 +134,7 @@ def update_student(id):
 
   student.name = request.json["name"]
   student.linkedin = request.json["linkedin"]
+  student.github = request.json["github"]
   student.image = request.json["image"]
   student.summary = request.json["summary"]
   student.python_skill = request.json["python_skill"]
@@ -152,6 +159,7 @@ def update_student(id):
   student.functional_programming = request.json["functional_programming"]
   student.software_engineering = request.json["software_engineering"]
   student.apis = request.json["apis"]
+  student.hired = request.json["hired"]
   
   db.session.commit()
   return student_schema.jsonify(student)
