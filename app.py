@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://adwbwtpnxuanga:d4ad61ad0a8d340b3bb2c668ff0ca24732a0f35218bc03287cb7a3ba00a17d5d@ec2-23-21-115-109.compute-1.amazonaws.com:5432/d8kblmf4rj7tjj"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://lcepiojrcsnvzk:c04001f07de847f6402f9c6c0abefdda9582ba2b033532710c898785a70deb09@ec2-54-235-100-99.compute-1.amazonaws.com:5432/d8tgp2dr01hpsn"
 heroku = Heroku(app)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
