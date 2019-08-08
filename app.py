@@ -43,8 +43,9 @@ class Student(db.Model):
   software_engineering = db.Column(db.String(5))
   apis = db.Column(db.String(5))
   hired = db.Column(db.Boolean)
+  cirr_position = db.Column(db.String(50))
 
-  def __init__(self, name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired):
+  def __init__(self, name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired, cirr_position):
     self.name = name
     self.linkedin = linkedin
     self.github = github
@@ -73,10 +74,11 @@ class Student(db.Model):
     self.software_engineering = software_engineering
     self.apis = apis
     self.hired = hired
+    self.cirr_position = cirr_position
 
 class StudentSchema(ma.Schema):
   class Meta:
-    fields = ("id", "name", "linkedin", "github", "image", "summary", "python_skill", "react_skill", "github_skill", "json_skill", "css_scss_skill", "data_type_skill", "sql_skill", "javascript_skill", "html_skill", "uml_skill", "ui_ux_skill", "control_structures", "algorithms", "quality", "project_management", "problem_solving", "agile", "oop", "functional_programming", "software_engineering", "apis", "hired")
+    fields = ("id", "name", "linkedin", "github", "image", "summary", "python_skill", "react_skill", "github_skill", "json_skill", "css_scss_skill", "data_type_skill", "sql_skill", "javascript_skill", "html_skill", "uml_skill", "ui_ux_skill", "control_structures", "algorithms", "quality", "project_management", "problem_solving", "agile", "oop", "functional_programming", "software_engineering", "apis", "hired", "cirr_position")
 
 student_schema = StudentSchema()
 students_schema = StudentSchema(many=True)
@@ -119,8 +121,9 @@ def add_student():
     software_engineering = request.json["software_engineering"]
     apis = request.json["apis"]
     hired = request.json["hired"]
+    cirr_position = request.json["cirr_position"]
 
-    register_student = Student(name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired)
+    register_student = Student(name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired, cirr_position)
 
     db.session.add(register_student)
     db.session.commit()
@@ -160,6 +163,7 @@ def update_student(id):
   student.software_engineering = request.json["software_engineering"]
   student.apis = request.json["apis"]
   student.hired = request.json["hired"]
+  student.cirr_position = request.json["cirr_position"]
   
   db.session.commit()
   return student_schema.jsonify(student)
@@ -186,6 +190,55 @@ def delete_student(id):
   db.session.commit()
 
   return jsonify("Student Deleted")
+
+
+
+
+
+
+#add all students (dev use only)
+@app.route("/add-multiple-students", methods=["POST"])
+def add_multiple_students():
+  if request.content_type == "application/json":
+    for student in request.json:
+      print(student["name"])
+  
+      name = student["name"]
+      linkedin = student["linkedin"]
+      github = student["github"]
+      image = student["image"]
+      summary = student["summary"]
+      python_skill = student["python_skill"]
+      react_skill = student["react_skill"]
+      github_skill = student["github_skill"]
+      json_skill = student["json_skill"]
+      css_scss_skill = student["css_scss_skill"]
+      data_type_skill = student["data_type_skill"]
+      sql_skill = student["sql_skill"]
+      javascript_skill = student["javascript_skill"]
+      html_skill = student["html_skill"]
+      uml_skill = student["uml_skill"]
+      ui_ux_skill = student["ui_ux_skill"]
+
+      control_structures = student["control_structures"]
+      algorithms = student["algorithms"]
+      quality = student["quality"]
+      project_management = student["project_management"]
+      problem_solving = student["problem_solving"]
+      agile = student["agile"]
+      oop = student["oop"]
+      functional_programming = student["functional_programming"]
+      software_engineering = student["software_engineering"]
+      apis = student["apis"]
+      hired = student["hired"]
+      cirr_position = student["cirr_position"]
+
+      register_student = Student(name, linkedin, github, image, summary, python_skill, react_skill, github_skill, json_skill, css_scss_skill, data_type_skill, sql_skill, javascript_skill, html_skill, uml_skill, ui_ux_skill, control_structures, algorithms, quality, project_management, problem_solving, agile, oop, functional_programming, software_engineering, apis, hired, cirr_position)
+
+      db.session.add(register_student)
+      db.session.commit()
+    return "All Students Successfully Submitted"
+  return "POSTS failed"
 
 
 if __name__ == "__main__":
