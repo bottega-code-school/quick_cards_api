@@ -13,6 +13,7 @@ gunicorn = "*"
 flask-heroku = "*"
 flask-cors = "*"
 flask-marshmallow = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"
